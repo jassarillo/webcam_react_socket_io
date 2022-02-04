@@ -14,3 +14,56 @@
     autoplay="true"></video>
     <canvas id="preview"></canvas>
     <div class="status"></div>
+
+    <script>
+        var canvas = document.querySelector('#preview');
+        var context = canvas.getContext('2d');
+        var btn = document.querySelector('#btn');
+
+        canvas.width = 512;
+        canvas.height = 384;
+
+        context.width = canvas.width;
+        context.height = canvas.height;
+
+        var video = document.querySelector('#video');
+
+        var socket = io();
+
+        function publicarMensaje(msg) {
+            document.querySelector('.status').innerText = msg;
+
+        }
+
+        function loadCamara(){
+            video.srcObject = stream;
+            publicarMensaje('camara funcionando');
+        }
+
+        function errorCamara(){
+            publicarMensaje('camara ha fallado');
+        }
+
+        function verVideo(video, context) {
+            context.drawImage(video, 0,0, context.width, context.height);
+            socket.emit('stream', canvas.toDataURL('image/webp'))
+        }
+
+        btn.addEventListener('click', () =>{
+            alert('emitiendo');
+            navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || 
+            navigator.mozGetUserMedia || navigator.msgGetUserMedia);
+
+            if(navigator.getUserMedia)
+            {
+                navigator.getUserMedia({ video: true}, loadCamara, errorCamara)
+            }
+
+            var intervalo = setInterval(() =>{
+                verVideo(video, context);
+            }, 500);
+        })
+
+    </script>
+</body>
+</html>
