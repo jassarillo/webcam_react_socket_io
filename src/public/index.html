@@ -35,7 +35,7 @@
 
         }
 
-        function loadCamara(){
+        function loadCamara(stream){
             video.srcObject = stream;
             publicarMensaje('camara funcionando');
         }
@@ -50,7 +50,7 @@
         }
 
         btn.addEventListener('click', () =>{
-            alert('emitiendo');
+            //alert('emitiendo');
             navigator.getUserMedia = (navigator.getUserMedia || navigator.webkitGetUserMedia || 
             navigator.mozGetUserMedia || navigator.msgGetUserMedia);
 
@@ -61,7 +61,7 @@
 
             var intervalo = setInterval(() =>{
                 verVideo(video, context);
-            }, 500);
+            }, 80);
         })
 
     </script>
